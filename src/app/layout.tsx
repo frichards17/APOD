@@ -17,6 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <title>APOD - Astronomy Picture of the Day</title>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <body className={inter.className} id='app'>
         <ThemeComponent>

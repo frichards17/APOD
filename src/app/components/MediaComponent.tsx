@@ -1,9 +1,10 @@
 'use client'
 import React from 'react'
-import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton } from '@mui/material';
 import LoadingImageComponent from './LoadingImageComponent';
+import { useLoadingStore } from '../state/LoadingState';
+import { useFullscreenLoadingStore } from '../state/FullscreenLoadingState';
 
 type Props = {
     src: string,
@@ -19,6 +20,7 @@ const MediaComponent = ({
     media_type
 }: Props) => {
 
+    const {setLoading} = useFullscreenLoadingStore()
     const [fullscreen, setFullscreen] = React.useState(false);
 
     if (media_type == 'image') {
@@ -27,17 +29,21 @@ const MediaComponent = ({
                 <LoadingImageComponent
                     src={src}
                     alt={alt}
-                    onClick={() => setFullscreen(true)}
+                    onClick={() => {
+                        setFullscreen(true);
+                    } }
                     className='w-full h-full relative'
-                    objectFit='object-cover'
+                    objectFit='object-cover' 
+                    useLoadingStore={useLoadingStore}
                 />
-                <div className={`${fullscreen ? 'absolute' : 'hidden'} w-screen h-screen z-10 top-0 left-0 p-4 backdrop-blur-sm`}>
+                <div className={`${fullscreen ? 'fixed' : 'hidden'} w-screen h-screen z-10 top-0 left-0 p-4 backdrop-blur-sm`}>
                             <LoadingImageComponent
                                 src={hdsrc}
-                                alt={alt}
+                                alt={"fullscreen"}
                                 onClick={()=>{}}
                                 className='h-full w-full relative'
                                 objectFit='object-contain'
+                                useLoadingStore={useFullscreenLoadingStore}
                             />
                     <IconButton
                         size='large'

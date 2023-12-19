@@ -1,12 +1,12 @@
 import dayjs, { Dayjs } from 'dayjs'
 import { create } from 'zustand'
 
-export interface LoadingState {
+interface LoadingState {
     loading: boolean,
     setLoading: (date: boolean) => void
 }
 
-export const useLoadingStore = create<LoadingState>()((set) => ({
+export const useFullscreenLoadingStore = create<LoadingState>()((set) => ({
     loading: true,
     setLoading: (loading: boolean) => set({loading})
 }))

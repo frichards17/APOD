@@ -7,7 +7,7 @@ type Props = {
     title: string
 }
 
-const TopBarComponent = ({ children}: React.PropsWithChildren<Props>) => {
+const TopBarComponent = ({ children }: React.PropsWithChildren<Props>) => {
 
     return (
         <div className='w-full flex flex-col items-center border-primary-800 shadow-outer shadow-primary-950 px-8'>

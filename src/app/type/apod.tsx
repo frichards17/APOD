@@ -6,5 +6,6 @@ export default interface apod
     media_type: string,
     explanation: string,
     date: string,
-    copyright: string
+    copyright: string,
+    thumbnail_url: string
 }

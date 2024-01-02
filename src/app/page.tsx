@@ -1,13 +1,56 @@
 import React from "react";
 import MediaComponent from "./components/MediaComponent";
-import apod from "./type/apod";
+import { fetchAPOD } from "./utility/Utility";
 import { redirect } from 'next/navigation'
 import dayjs from "dayjs";
 import ChevronButtonComponent from "./components/ChevronButtonComponent";
 import { Direction } from "./enum/Direction"
 import AccordionText from "./components/AccordionText";
 import FooterComponent from "./components/FooterComponent";
+import Head from "next/head";
+import { Metadata, ResolvingMetadata } from "next";
 
+export async function generateMetadata({
+  searchParams
+}: {
+  searchParams: { date: string }
+},
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+
+  const apod = await fetchAPOD(searchParams.date)
+  const video = (apod?.media_type == 'video')
+
+  if (video) {
+
+    return {
+      twitter: {
+        card: "player",
+        players: {
+          playerUrl: apod?.url || "",
+          streamUrl: apod?.url || "",
+          width: 1280,
+          height: 720
+        },
+        site: "@fronkrr",
+        title: "Astronomy Picture of the Day",
+        description: "View daily astronomy pictures."
+      }
+    }
+
+  } else {
+
+    return {
+      twitter: {
+        card: "summary_large_image",
+        site: "@fronkrr",
+        title: "Astronomy Picture of the Day",
+        description: "View daily astronomy pictures.",
+        images: [apod?.url || ""]
+      }
+    }
+  }
+}
 
 export default async function Page({
   searchParams
@@ -65,34 +108,9 @@ export default async function Page({
         <AccordionText text={apod?.explanation || ""} />
       </div>
       <div className={apod?.media_type == 'video' ? 'w-[70%]' : 'w-full'}>
-      <FooterComponent copyright={apod?.copyright || ""} mediaType={apod?.media_type || ""}/>
+        <FooterComponent copyright={apod?.copyright || ""} mediaType={apod?.media_type || ""} />
       </div>
     </div>
 
   )
 }
-
-const fetchAPOD = async (date: string) => {
-  if (!date) return null;
-
-  const key: string = process.env.NASA_API_KEY || ""
-
-  try {
-    const url = "https://api.nasa.gov/planetary/apod?" + new URLSearchParams({
-      api_key: key,
-      date: date || ""
-    })
-
-    const res = await fetch(url)
-
-    if (!res.ok) return null;
-
-    const data: apod = await res.json();
-
-    return data;
-  } catch (err) {
-    console.log("ERROR")
-    console.log(err)
-    return null;
-  }
-};

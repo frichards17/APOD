@@ -34,7 +34,8 @@ export async function generateMetadata({
         },
         site: "@fronkrr",
         title: "Astronomy Picture of the Day",
-        description: "View daily astronomy pictures."
+        description: "View daily astronomy pictures.",
+        images:[apod?.thumbnail_url]
       }
     }
 

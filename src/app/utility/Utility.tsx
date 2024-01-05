@@ -15,17 +15,17 @@ export const fetchAPOD = async (date: string) => {
       const res = await fetch(url)
   
       if (!res.ok) {
-        console.log("response not ok")
+        console.log("APOD response not ok")
+        console.log(`APOD reponse ${res.status}`)
         return null;
       }
   
       const data: apod = await res.json();
   
-      console.log("successfully fetched apod")
-      console.log(data)
+      console.log(`APOD fetch for ${date}`)
       return data;
     } catch (err) {
-      console.log("apod fetch ERROR")
+      console.log("APOD fetch ERROR")
       console.log(err)
       return null;
     }

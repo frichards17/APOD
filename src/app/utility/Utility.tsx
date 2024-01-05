@@ -14,13 +14,18 @@ export const fetchAPOD = async (date: string) => {
   
       const res = await fetch(url)
   
-      if (!res.ok) return null;
+      if (!res.ok) {
+        console.log("response not ok")
+        return null;
+      }
   
       const data: apod = await res.json();
   
+      console.log("successfully fetched apod")
+      console.log(data)
       return data;
     } catch (err) {
-      console.log("ERROR")
+      console.log("apod fetch ERROR")
       console.log(err)
       return null;
     }
